@@ -1,2 +1,0 @@
-Since there can only be 1 MDB resource per project, a config map is required for each MDB resource deployed.
-With that in mind, I moved the config-map creation into each deployment script.
