@@ -1,0 +1,22 @@
+By default, you have to finish Ops Manager setup using the Configuration Wizard.
+This manual step can be bypassed by setting "ignoreInitialUiSetup" to "true"
+and supplying the mandatory Ops Manager settings.
+Otherwise, go to the Ops Manager UI to complete configuration.
+Access the Ops Manager UI from any K8s node at the NodePort specified in ops-manager.yaml.
+Or, get the port using: kubectl get services -n mongodb
+
+The remaining manual steps are mandatory.
+Access the Ops Manager UI from any K8s node at the NodePort specified in ops-manager.yaml.
+
+Create an initial organization: User (top-right) > Organizations > New Organization.
+Add this organization ID to any MDB resource YAML files.
+
+Create an API Key (Access > API Keys). 
+Add a whitelist entry to allow access from the K8s worder nodes (192.0.0.0/8).
+Add the public and private key to the file that creates the Ops Manager secret.
+
+Add organization ID to MDB resource YAML files.
+
+Proceed with creating the Ops Manager secret.
+Proceed with deploying MongoDB resources.
+
