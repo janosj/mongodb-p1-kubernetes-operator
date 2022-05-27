@@ -1,7 +1,7 @@
-kubectl create secret generic demo-password --from-literal="password=d3m0M10wnPassw0rd"
+kubectl create secret generic demo-password --from-literal="password=<PASSWORD-GOES-HERE>"
 
-# This required step is not in the guide.
 kubectl label secret demo-password atlas.mongodb.com/type=credentials
+
 
 cat <<EOF | kubectl apply -f -
 apiVersion: atlas.mongodb.com/v1
@@ -14,7 +14,7 @@ spec:
       databaseName: "admin"
   projectRef:
     name: demo-atlas-project
-  username: demok8user
+  username: <USERNAME-GOES-HERE>
   passwordSecretRef:
     name: demo-password
 EOF
