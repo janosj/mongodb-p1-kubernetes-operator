@@ -1,0 +1,12 @@
+# List pods
+kubectl get pods -n mongodb
+
+# List containers used by Operator
+kubectl describe pod mongodb-enterprise-operator -n mongodb
+ 
+# Get operator logs
+kubectl logs -f deployment/mongodb-enterprise-operator -n mongodb
+
+# Connect to a container
+kubectl exec --stdin --tty <container-name> -- /bin/bash
+

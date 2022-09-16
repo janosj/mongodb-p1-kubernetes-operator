@@ -1,0 +1,6 @@
+# This file will be created automatically by the finishOpsMgrConfig script.
+# So you don't need to do anything with it.
+# But it's needed whenever an MDB resource is deployed.
+export OPSMGR_URL=http://xxxxxxxxxxxxxxxxxxxxxxxxx.us-east-2.elb.amazonaws.com:8080
+export OPSMGR_ORG=xxxxxxxxxxxxxxxxxxxxx
+

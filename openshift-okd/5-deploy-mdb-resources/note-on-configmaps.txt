@@ -1,0 +1,5 @@
+Since there can only be 1 MDB resource per project, 
+a separate config map is required for each MDB resource deployed. 
+And since therefore they can't be reused, they have been embedded 
+within each deployment script.
+

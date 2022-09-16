@@ -1,0 +1,23 @@
+Manual Step: Create a secret with credentials to pull images from registry.connect.redhat.com.
+
+The different Red Hat registries are described here:
+https://access.redhat.com/RegistryAuthentication
+Note that registry.redhat.io is for Red Hat products, whereas
+registry.connect.redhat.com (which we have to add) is for Third-party products.
+
+Instructions for this step can be found in the OpenShift Quick Start guide:
+https://docs.mongodb.com/kubernetes-operator/master/openshift-quick-start/#create-a-k8s-secret-that-contains-credentials-authorized-to-pull-images-from-the-registry-connect-redhat-com-repository
+
+Use the documented name, "openshift-pull-secret", to work with subsequent scripts.
+
+This is a different pull secret than the pull secret used to deploy the OKD cluster. 
+That pull secret is associated with your user account.
+This pull secret is associated with a registry service account. 
+Registry service accounts are named tokens that can be used in environments 
+where credentials will be shared, such as deployment systems.
+That's from here: https://access.redhat.com/terms-based-registry/
+From there, you can create a New Service Account.
+
+With the service account created, follow the rest of the steps in the Quick Start Guide
+to add an additional authorization for registry.connect.redhat.com. 
+

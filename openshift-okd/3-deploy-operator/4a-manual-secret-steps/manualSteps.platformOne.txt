@@ -1,0 +1,7 @@
+For Platform 1 testing, I pushed containers to my own personal repo on quay.io: quay.io/<myrepo>.
+No additional secrets seem to be necessary for this, but I did have to make all of them to be public.
+By default, they were private upon creation, but I could never pull them down, even after adding a secret.
+There's a warning on quay that says 9 private repos exceed my plan, so I may need to subscribe to host any private images.
+
+Pulling containers from Iron Bank does require a secret.
+
