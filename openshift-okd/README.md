@@ -1,6 +1,6 @@
 # MongoDB Kubernetes Operator + OpenShift OKD
 
-Scripts to deploy, first, an OKD Kubernetes cluster and then, second, the MongoDB Enterprise Kubernetes Operator and MongoDB database resources to that cluster. Uses both the standard MongoDB Kubernetes Operator container images hosted on Quay.io and the hardened images deployed to Platform One. 
+Scripts to deploy 1) an OKD Kubernetes cluster and 2) the MongoDB Enterprise Kubernetes Operator and MongoDB database resources to that cluster. Uses both the standard MongoDB Kubernetes Operator container images hosted on Quay.io and the hardened images deployed to Platform One. 
 
 ## Prerequisites
 
