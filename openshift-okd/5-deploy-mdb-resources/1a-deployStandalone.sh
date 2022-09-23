@@ -1,8 +1,8 @@
-# This will attempt to deploy a version of MongoDB 
-# that is not available to the local mode deployment
+source env.conf
+source $OPS_MGR_SETTINGS_FILE
 
-source opsmgr.settings.notCommitted
-CONFIG_MAP=cm-bad-version
+RESOURCE_NAME=mdb-standalone
+CONFIG_MAP=cm-$RESOURCE_NAME
 
 echo
 echo "Creating Config Map $CONFIG_MAP ..."
@@ -15,7 +15,7 @@ kind: ConfigMap
 metadata:
   name: $CONFIG_MAP
 data:
-  projectName: Kubernetes Bad Version
+  projectName: K8s Standalone
   baseUrl: $OPSMGR_URL
   orgId: $OPSMGR_ORG
 EOF
@@ -25,20 +25,19 @@ echo VERIFY ConfigMap:
 kubectl get configmap $CONFIG_MAP -o yaml --namespace=mongodb
 echo
 echo
-echo "Deploying Standalone with incorrect version ..."
 
+echo "Deploying standalone MDB ..."
+# Complete 1.16 resource spec is here: 
+# https://www.mongodb.com/docs/kubernetes-operator/v1.16/reference/k8s-operator-specification/ 
+# Requires 1 persistent volume (dynamically or statically provisioned).
 cat <<EOF | kubectl apply -n mongodb -f -
-#
-# This is a minimal config. To see all the options available, refer to the
-# "extended" directory
-#
 ---
 apiVersion: mongodb.com/v1
 kind: MongoDB
 metadata:
-  name: mdb-bad-version
+  name: $RESOURCE_NAME
 spec:
-  version: 5.0.6-ent
+  version: $DB_VERSION
   type: Standalone
   # Before you create this object, you'll need to create a project ConfigMap and a
   # credentials Secret. For instructions on how to do this, please refer to our
@@ -53,11 +52,17 @@ spec:
   # testing only, and must not be used in production. 'false' will disable
   # Persistent Volume Claims. The default is 'true'
   persistent: true
+
+  resources:
+    cpu: '0.25'
+    memory: 512M
+    storage: 8Gi
+    # storage_class: basic
+
 EOF
 
 echo
-echo "To DELETE: kubectl delete mdb mdb-bad-version -n mongodb"
-echo "To DELETE: kubectl delete configmap $CONFIG_MAP -n mongodb"
+echo "To DELETE: kubectl delete mdb $RESOURCE_NAME -n mongodb"
 echo
 echo "Status:"
 kubectl get pods -n mongodb -w

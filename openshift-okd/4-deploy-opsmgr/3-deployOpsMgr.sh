@@ -61,17 +61,22 @@ echo
 echo "See script for additional status commands."
 echo
 echo "Showing pod status:"
+kubectl get pods -w
+
+# These assume the default namespace is set to mongodb.
+# Otherwise, add "-n mongodb"
 
 # Verify OM deployment
-# kubectl get om -n mongodb -w
+# kubectl get om -w
 # kubectl get om -o yaml -w
 
-# Verify pods:
-kubectl get pods -n mongodb -w
+# Verify persistent volumes and claims
+# kubectl get pvc
+# kubectl get pv
 
-# Determine Ops Manager port:
-# kubectl get service --all-namespaces
+# Determine Ops Manager URL and port:
+# kubectl get service
 
 # To DELETE:
-# kubectl delete om ops-manager -n mongodb
+# kubectl delete om ops-manager
 

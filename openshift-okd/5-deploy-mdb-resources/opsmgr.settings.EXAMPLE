@@ -1,6 +1,7 @@
-# This file will be created automatically by the finishOpsMgrConfig script.
-# So you don't need to do anything with it.
-# But it's needed whenever an MDB resource is deployed.
+# opsmgr.settings.AUTO_GENERATED will be created automatically by the 
+# finishOpsMgrConfig script, so you don't need to do anything with it.
+# The file is needed whenever an MDB resource is deployed.
+# Ths contents of the file should look like this:
 export OPSMGR_URL=http://xxxxxxxxxxxxxxxxxxxxxxxxx.us-east-2.elb.amazonaws.com:8080
 export OPSMGR_ORG=xxxxxxxxxxxxxxxxxxxxx
 

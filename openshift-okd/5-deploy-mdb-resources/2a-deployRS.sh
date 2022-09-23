@@ -1,6 +1,7 @@
-source opsmgr.settings.notCommitted
-source db.settings
-CONFIG_MAP=cm-rs2-persistent
+source env.conf
+source $OPS_MGR_SETTINGS_FILE
+RESOURCE_NAME=$RS_NAME
+CONFIG_MAP=cm-$RESOURCE_NAME
 
 echo
 echo "Creating Config Map $CONFIG_MAP ..."
@@ -13,7 +14,7 @@ kind: ConfigMap
 metadata:
   name: $CONFIG_MAP
 data:
-  projectName: K8s RS2 Persistent
+  projectName: K8s Demo App RS
   baseUrl: $OPSMGR_URL
   orgId: $OPSMGR_ORG
 EOF
@@ -24,19 +25,23 @@ kubectl get configmap $CONFIG_MAP -o yaml --namespace=mongodb
 echo
 echo
 
-echo "Deploying Replica Set 2 Persistent ..."
-# this requires 3 persistent volumes, 
-# either dynamically or statically provisioned.
+echo "Deploying 3-Node Replica Set $RESOURCE_NAME ..."
+# Complete 1.16 resource spec is here:
+# https://www.mongodb.com/docs/kubernetes-operator/v1.16/reference/k8s-operator-specification/
+# Requires 3 persistent volumes, either dynamically or statically provisioned.
 cat <<EOF | kubectl apply -n mongodb -f -
 ---
 apiVersion: mongodb.com/v1
 kind: MongoDB
 metadata:
-  name: rs2-persistent
+  name: $RESOURCE_NAME
 spec:
   members: 3
   version: $DB_VERSION
   type: ReplicaSet
+  statefulSet:
+    spec:
+      serviceName: $SERVICE_NAME
 
   opsManager:
     configMapRef:
@@ -53,7 +58,7 @@ spec:
 EOF
 
 echo
-echo "To DELETE: kubectl delete mdb rs2-persistent -n mongodb"
+echo "To DELETE: kubectl delete mdb $RESOURCE_NAME -n mongodb"
 echo
 echo "Status:"
 kubectl get pods -n mongodb -w

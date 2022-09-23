@@ -21,7 +21,7 @@ git clone --branch $REPO_BRANCH --single-branch https://github.com/mongodb/mongo
 #rm -rf $REPO_DIR/.github
 
 echo
-echo "Repo cloned to $REPO_DIR."
+echo "Branch $REPO_BRANCH of public repo cloned to $REPO_DIR."
 echo
 
 

@@ -1,5 +1,9 @@
-source opsmgr.settings.notCommitted
-source db.settings
+# Deploys a standalone without persistent storage.
+# Useful for testing if you haven't yet worked out 
+# persistent storage in your Kubernetes cluster.
+
+source env.conf
+source $OPS_MGR_SETTINGS_FILE
 CONFIG_MAP=cm-standalone1
 
 echo

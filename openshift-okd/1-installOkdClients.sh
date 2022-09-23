@@ -1,8 +1,11 @@
 # OKD releases can be found at https://github.com/okd-project/okd/releases
 # Download site is in the docs (Installation Process):
 # https://docs.okd.io/4.9/architecture/architecture-installation.html#installation-process_architecture-installation
+
 # Download both the installer (openshift-install) and the client tools (oc and kubectl).
+
 OKD_CLIENT_URL=https://github.com/okd-project/okd/releases/download/4.11.0-0.okd-2022-08-20-022919/openshift-client-mac-4.11.0-0.okd-2022-08-20-022919.tar.gz
+
 OKD_INSTALLER_URL=https://github.com/okd-project/okd/releases/download/4.11.0-0.okd-2022-08-20-022919/openshift-install-mac-4.11.0-0.okd-2022-08-20-022919.tar.gz
 
 # Create temporary working space.

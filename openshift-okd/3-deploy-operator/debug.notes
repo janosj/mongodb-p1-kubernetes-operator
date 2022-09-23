@@ -1,7 +1,7 @@
 # List pods
 kubectl get pods -n mongodb
 
-# List containers used by Operator
+# Lists all the containers used by the Operator
 kubectl describe pod mongodb-enterprise-operator -n mongodb
  
 # Get operator logs
