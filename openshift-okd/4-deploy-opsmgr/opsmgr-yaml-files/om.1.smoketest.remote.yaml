@@ -1,6 +1,9 @@
 # Basic Ops Mgr config to do a simple smoke test.
 # Use in conjunction with mongodb-enterprise-openshift.1.quickstart-mods.yaml.
 # Uses default Remote mode operation (not for disconnected environments).
+
+# Upgraded to OM 6.0.3 from 5.0.14, in conjunction with Operator 1.17.2.
+# No changes were noted in the 1.17.2 branch from previous iterations.
 # The basis for this config is samples/ops-manager.yaml from the 1.16.4 branch
 # Ops Mgr spec.version has been changed from 5.0.5 to 5.0.14
 # default domain is 'cluster.local', but you could change that to 'myCompany.net'
@@ -14,7 +17,7 @@ metadata:
   name: ops-manager
 spec:
   replicas: 1
-  version: 5.0.14
+  version: 6.0.3
   adminCredentials: ops-manager-admin-secret
 
   # These come from samples/ops-manager-ignore-ui-setup.yaml

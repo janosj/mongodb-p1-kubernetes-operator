@@ -1,0 +1,10 @@
+{
+	"auths": {
+		"registry1.dso.mil": {
+			"auth": "<base64-encoded credentials>"
+		}
+	},
+	"HttpHeaders": {
+		"User-Agent": "Docker-Client/19.03.8 (linux)"
+	}
+}

@@ -13,7 +13,7 @@ echo " 3) Use Iron Bank images."
 read n
 case $n in
  1) echo "Using publicly available images..."
-    YAML_FILE=mongodb-enterprise-openshift.1.quickstart-mods.yaml
+    YAML_FILE=mongodb-enterprise-openshift.1.pullSecret.yaml
     ;;
  2) echo "Using modified images from test repo on Quay.io..."
     YAML_FILE=mongodb-enterprise-openshift.2.p1-quaytest.yaml

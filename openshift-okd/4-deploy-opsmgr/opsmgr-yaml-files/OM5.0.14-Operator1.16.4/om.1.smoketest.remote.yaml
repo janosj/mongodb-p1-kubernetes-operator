@@ -1,4 +1,12 @@
-# Modifies the original smoke test configuration to use a single agent.
+# Basic Ops Mgr config to do a simple smoke test.
+# Use in conjunction with mongodb-enterprise-openshift.1.quickstart-mods.yaml.
+# Uses default Remote mode operation (not for disconnected environments).
+# The basis for this config is samples/ops-manager.yaml from the 1.16.4 branch
+# Ops Mgr spec.version has been changed from 5.0.5 to 5.0.14
+# default domain is 'cluster.local', but you could change that to 'myCompany.net'
+# adminCredentials: either remove the secret or change the password using Ops Manager UI.
+# configuration: from ops-manager-ignore-ui-setup.yaml 
+# External connectivity via Load Balancer (from ops-manager-external.yaml)
 ---
 apiVersion: mongodb.com/v1
 kind: MongoDBOpsManager
@@ -6,7 +14,7 @@ metadata:
   name: ops-manager
 spec:
   replicas: 1
-  version: 6.0.3
+  version: 5.0.14
   adminCredentials: ops-manager-admin-secret
 
   # These come from samples/ops-manager-ignore-ui-setup.yaml
@@ -33,20 +41,10 @@ spec:
   # the application database backing Ops Manager. Replica Set is the only supported type
   # Application database has the SCRAM-SHA authentication mode always enabled
   applicationDatabase:
-    # This has to match the tag of the appdb-database container image in Iron Bank
-    version: 5.0.9-ent
     members: 3
-    podSpec:
-      podTemplate:
-        spec:
-          # The monitoring agent version defaults to the minimum supported version for
-          # the given version of Ops Manager. e.g. for Ops Manager 5.0.7, that's version
-          # 11.0.5.6963-1 of the agent, which isn't available on Iron Bank.
-          # This switches it to use the available version.
-          # See here: https://kb.corp.mongodb.com/article/000020711/
-          containers:
-            - name: mongodb-agent-monitoring
-              image: quay.io/janosjus/mongodb-agent:12.0.11.7606-1
+    # optional. Configures the version of MongoDB used as an application database.
+    # The bundled MongoDB binary will be used if omitted and no download from the Internet will happen
+    version: 5.0.9-ent
 
   backup:
     enabled: false

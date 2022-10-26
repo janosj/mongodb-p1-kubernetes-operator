@@ -10,7 +10,7 @@ echo "Please select from the following list of options: "
 echo
 echo " 1) Basic config with default *remote* mode to do an intial smoke test."
 echo "    Uses *standard containers* if the operator was deployed using"
-echo "    mongodb-enterprise-openshift.1.quickstart-mods.yaml."
+echo "    mongodb-enterprise-openshift.1.pullSecret.yaml."
 echo
 echo " 2) Uses *test containers* on quay.io."
 echo "    Uses the default *remote* mode (i.e. downloads binaries from mongodb.com)."

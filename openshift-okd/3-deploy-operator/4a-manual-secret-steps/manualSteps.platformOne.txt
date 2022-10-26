@@ -1,7 +1,43 @@
-For Platform 1 testing, I pushed containers to my own personal repo on quay.io: quay.io/<myrepo>.
-No additional secrets seem to be necessary for this, but I did have to make all of them to be public.
-By default, they were private upon creation, but I could never pull them down, even after adding a secret.
-There's a warning on quay that says 9 private repos exceed my plan, so I may need to subscribe to host any private images.
+For Platform 1 testing, modified containers can be pushed to a personal repo on quay.io, i.e. quay.io/<your-repo>.
+No additional secrets seem to be necessary, but it does appear to be necessary to make them public.
+Marked private, they couldn't be pulled, even after adding a secret (user error?).
+A warning on quay indicate 9 private repos exceeded plan - a subscription may be required to host private images.
 
-Pulling containers from Iron Bank does require a secret.
+
+Pulling containers from Iron Bank does require a secret, as it's a private registry.
+See ../4b-createSecret.platformOne.sh and ../auth.platformOne.json.
+The imagePullSecret is referenced in the mongodb-enterprise.p1.yaml file.
+
+Prior to generating the secret, a valid set of credentials has to be placed in the auth.platformOne.json file.
+These credentials can be obtained by running:
+  sudo docker login https://registry1.dso.mil 
+  Username: <username>
+  Password: <CLI secret, obtained from the registry1 web site)
+
+Unfortunately, this doesn't work from a mac, where the credentials written to 
+~/.docker/config.json will only show some credsStore (e.g. "Desktop").
+What we need are the unencrypted base64-encoded auth credentials.
+
+Using Linux, on the other hand, works fine.
+Option 1: use a Linux Virtual Machine, if you have one.
+Option 2: spin up an Amazon Linux EC2 instance.
+To install Docker:
+  sudo yum install docker
+  sudo systemctl start docker.service
+
+Without logging in, the following pull command fails (specify the correct version):
+  sudo docker pull registry1.dso.mil/ironbank/mongodb/mongodb-enterprise/mongodb-enterprise-operator:1.17.2
+
+Now login with Docker:
+  sudo docker login https://registry1.dso.mil
+
+Run the docker pull command again, and it should successfully pull down the image.
+
+Upon running Docker login, the necessary credentials can be found in:
+   ~/.docker/config.json
+
+The "auth" value can be copied and pasted into the auth.platformOne.json file.
+Run the scripts to create the secret in Kubernetes.
+Images from Platform One should now be accessible, and deployment of the Operator
+(and Ops Manager, and MongoDB instances) can now proceed.
 

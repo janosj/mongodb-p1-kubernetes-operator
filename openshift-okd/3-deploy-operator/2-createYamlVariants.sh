@@ -35,7 +35,7 @@ echo
 
 
 # Modify file for Openshift. Uses standard MongoDB container images from registry.connect.redhat.com.
-# All this does here is implement a manual step that's in the directions:
+# Implements a manual step that's in the directions:
 # https://www.mongodb.com/docs/kubernetes-operator/master/openshift-quick-start/#install-the-k8s-op-full
 # Pulling images from the registry.connect.redhat.com repository requires authentication.
 # You have to manually create a ServiceAccount, and then identify the pull secret here.
@@ -46,7 +46,7 @@ echo
 sed 's/^kind: ServiceAccount/kind: ServiceAccount\nimagePullSecrets:               # ADDED FOR OPENSHIFT\n - name: openshift-pull-secret  # ADDED FOR OPENSHIFT/g' $YAML_DIR/$FILENAME_ORIGINAL > $YAML_DIR/$FILENAME_OPENSHIFT_MODS
 
 echo "1. File $FILENAME_OPENSHIFT_MODS created,"
-echo "   updated to include required Pull Secret for Red Hat repo."
+echo "   Updated to include required Pull Secret for Red Hat repo."
 echo "   3rd-party products are pulled from registry.connect.redhat.com, which requires authentication."
 echo "   The pull secret itself has to be manually created and then deployed to OKD (that's next)."
 echo "   The pull secret is tied to a Red Hat service account, which has to be created."
@@ -54,24 +54,31 @@ echo
 
 
 # Modify file for local testing.
-# Used in conjunction with a set of container images that have been  modified 
+# Used in conjunction with a set of container images that have been modified 
 # for Platform One and pushed to a public test repo on quay.io.
+
+# We don't need any pull secrets here, if the containers on quay are made public,
+# So start with the original:
 cp $YAML_DIR/$FILENAME_ORIGINAL $YAML_DIR/$FILENAME_PLATFORM1_TEST
 
-# We don't need any pull secrets here, if the containers on quay are made public.
+# Replace mongo repo (quay.io/mongodb) with test repo:
+# sed notes: Use double quotes to expand variable TEST_QUAY_REPO, and
+#            Use '|' instead of '/' to avoid having to escape forward slashes.
+sed -i '' "s|quay.io/mongodb|quay.io/$TEST_QUAY_REPO|g" $YAML_DIR/$FILENAME_PLATFORM1_TEST
+
+# As of Operator 1.17.2, all the images were renamed to *-ubi.
+# This is not the case in Platform One, so that has to be stripped out everywhere.
+sed -i '' "s|-ubi||g" $YAML_DIR/$FILENAME_PLATFORM1_TEST
 
 # The container names are different on Quay than they are on Red Hat
-sed -i '' "s|mongodb/enterprise-operator|mongodb/mongodb-enterprise-operator|g" $YAML_DIR/$FILENAME_PLATFORM1_TEST
-sed -i '' "s|mongodb/enterprise-database|mongodb/mongodb-enterprise-database|g" $YAML_DIR/$FILENAME_PLATFORM1_TEST
+# (Looks like this was fixed in 1.17.2 when things were renamed to *-ubi)
+#sed -i '' "s|mongodb/enterprise-operator|mongodb/mongodb-enterprise-operator|g" $YAML_DIR/$FILENAME_PLATFORM1_TEST
+#sed -i '' "s|mongodb/enterprise-database|mongodb/mongodb-enterprise-database|g" $YAML_DIR/$FILENAME_PLATFORM1_TEST
 
-
+# (Looks like this was fixed in 1.17.2)
 # Replace the following (the agent is on quay for some reason):
 #  registry.connect.redhat.com/mongodb   with   quay.io/TEST_QUAY_REPO
-#  quay.io/mongodb                       with   quay.io/TEST_QUAY_REPO
-# Notes: Double quotes needed to expand variable TEST_QUAY_REPO.
-#        Using '|' instead of '/' avoids having to escape forward slashes.
-sed -i '' "s|registry.connect.redhat.com/mongodb|quay.io/$TEST_QUAY_REPO|g" $YAML_DIR/$FILENAME_PLATFORM1_TEST
-sed -i '' "s|quay.io/mongodb|quay.io/$TEST_QUAY_REPO|g" $YAML_DIR/$FILENAME_PLATFORM1_TEST
+# sed -i '' "s|registry.connect.redhat.com/mongodb|quay.io/$TEST_QUAY_REPO|g" $YAML_DIR/$FILENAME_PLATFORM1_TEST
 
 # The container versions should match what's in the enterprise-database.yaml file.
 # But the agent won't, because it was selected to match the Ops Manager release.
@@ -80,14 +87,14 @@ sed -i '' "s|mongodb-agent.*|mongodb-agent:$AGENTVER|" $YAML_DIR/$FILENAME_PLATF
 echo "2. File $FILENAME_PLATFORM1_TEST created"
 echo "   to test Iron Bank containers prior to submission."
 echo "   Configured to use the quay.io/$TEST_QUAY_REPO repo."
-echo "   2 container names were adjusted (they're different on quay)."
+echo "   References to *-ubi (introduced in 1.17) have been removed, to mirror P1 container naming conventions."
 echo "   The agent version was updated to $AGENTVER."
 echo
 
 
 # Modify for Platform One.
 # Easiest to start with the file created above (the Platform One test file)
-# because it already has the corrected image names and versions. 
+# because it already has some required corrections. 
 cp $YAML_DIR/$FILENAME_PLATFORM1_TEST $YAML_DIR/$FILENAME_PLATFORM1
 
 # Swap the registry from quay.io/TEST_QUAY_REPO to registry1.dso.mil/ironbank/mongodb

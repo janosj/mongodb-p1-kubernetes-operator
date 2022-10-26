@@ -7,7 +7,7 @@ metadata:
   name: ops-manager
 spec:
   replicas: 1
-  version: 6.0.3
+  version: 5.0.14
   adminCredentials: ops-manager-admin-secret
 
   # These come from samples/ops-manager-ignore-ui-setup.yaml
@@ -51,7 +51,7 @@ spec:
           # See here: https://kb.corp.mongodb.com/article/000020711/
           containers:
             - name: mongodb-agent-monitoring
-              image: registry1.dso.mil/ironbank/mongodb/mongodb-enterprise/mongodb-agent:12.0.11.7606-1
+              image: registry1.dso.mil/ironbank/mongodb/mongodb-enterprise/mongodb-agent:11.0.19.7094-1
 
   # Added to support Local Mode operation.
   # Also required: the PersistentVolumeClaim further below.

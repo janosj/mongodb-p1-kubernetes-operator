@@ -7,7 +7,7 @@ metadata:
   name: ops-manager
 spec:
   replicas: 1
-  version: 5.0.14
+  version: 6.0.3
   adminCredentials: ops-manager-admin-secret
 
   # These come from samples/ops-manager-ignore-ui-setup.yaml
@@ -51,7 +51,7 @@ spec:
           # See here: https://kb.corp.mongodb.com/article/000020711/
           containers:
             - name: mongodb-agent-monitoring
-              image: quay.io/janosjus/mongodb-agent:11.0.19.7094-1
+              image: quay.io/janosjus/mongodb-agent:12.0.11.7606-1
 
   # Added to support Local Mode operation.
   # Also required: the PersistentVolumeClaim further below.
@@ -71,7 +71,7 @@ spec:
 
           initContainers:
           - name: mongodb-binaries-init-container
-            image: quay.io/janosjus/mongodb-ops-manager-db-bin:5.0.9
+            image: quay.io/janosjus/mongodb-ops-manager-db-bin:6.0.2
             command:
             - cp
             - -r
