@@ -16,3 +16,8 @@ kubectl get AtlasProject --all-namespaces
 # Or:
 # kubectl get AtlasProject demo-atlas-project
 
+echo
+echo "Check Atlas for Project creation."
+echo "If the new project isn't listed, check the Operator logs."
+echo
+
