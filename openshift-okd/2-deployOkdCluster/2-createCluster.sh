@@ -22,7 +22,7 @@ cp $CONFIG_FILE $CLUSTER_NAME/install-config.yaml
 # Corporate accounts are probably insufficient to deploy necessary
 # resources and register domain name.
 # A separate AWS CLI profile may be required to create installer-provisioned resources.
-# Security credentials are created in the AWS console (User > Profile > Access Keys)
+# Security credentials are created in the AWS console (User > Security Credentials > Access Keys)
 # and then downloaded and stored in /Users/<current-user>/.aws/credentials.
 # The profile can then be specified in as an env variable, or in the command lines.
 # e.g. --profile myProfileName

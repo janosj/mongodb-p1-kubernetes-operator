@@ -49,6 +49,9 @@ echo
 # Sign in using your Red Hat account and click the "Download Pull Secret" button.
 # Copy and paste the entire value into the config utility.
 
+# See note about aws profiles in createCluster.sh.
+export AWS_PROFILE=personal
+
 # Run the configuration utility.
 # This will store the config file in the specified directory,
 # which will be populated with additional files during deployment.
