@@ -82,7 +82,7 @@ sed -i '' "s|-ubi||g" $YAML_DIR/$FILENAME_PLATFORM1_TEST
 
 # The container versions should match what's in the enterprise-database.yaml file.
 # But the agent won't, because it was selected to match the Ops Manager release.
-sed -i '' "s|mongodb-agent.*|mongodb-agent:$AGENTVER|" $YAML_DIR/$FILENAME_PLATFORM1_TEST
+sed -i '' "s|mongodb-agent.*|mongodb-agent:$AGENTVER\"|" $YAML_DIR/$FILENAME_PLATFORM1_TEST
 
 echo "2. File $FILENAME_PLATFORM1_TEST created"
 echo "   to test Iron Bank containers prior to submission."
