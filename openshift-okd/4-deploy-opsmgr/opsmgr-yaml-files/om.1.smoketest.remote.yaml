@@ -2,10 +2,11 @@
 # Use in conjunction with mongodb-enterprise-openshift.1.quickstart-mods.yaml.
 # Uses default Remote mode operation (not for disconnected environments).
 
-# Upgraded to OM 6.0.3 from 5.0.14, in conjunction with Operator 1.17.2.
-# No changes were noted in the 1.17.2 branch from previous iterations.
-# The basis for this config is samples/ops-manager.yaml from the 1.16.4 branch
-# Ops Mgr spec.version has been changed from 5.0.5 to 5.0.14
+# Based on:
+# https://github.com/mongodb/mongodb-enterprise-kubernetes/blob/enterprise-operator-release-1-19-1/samples/ops-manager/ops-manager.yaml
+
+# Ops Mgr spec.version changed to 6.0.12.
+# application.Database changed to 5.0.14-ent.
 # default domain is 'cluster.local', but you could change that to 'myCompany.net'
 # adminCredentials: either remove the secret or change the password using Ops Manager UI.
 # configuration: from ops-manager-ignore-ui-setup.yaml 
@@ -17,7 +18,7 @@ metadata:
   name: ops-manager
 spec:
   replicas: 1
-  version: 6.0.3
+  version: 6.0.12
   adminCredentials: ops-manager-admin-secret
 
   # These come from samples/ops-manager-ignore-ui-setup.yaml
@@ -47,7 +48,7 @@ spec:
     members: 3
     # optional. Configures the version of MongoDB used as an application database.
     # The bundled MongoDB binary will be used if omitted and no download from the Internet will happen
-    version: 5.0.9-ent
+    version: 5.0.14-ent
 
   backup:
     enabled: false
