@@ -71,7 +71,7 @@ spec:
 
           initContainers:
           - name: mongodb-binaries-init-container
-            image: quay.io/janosjus/mongodb-ops-manager-db-bin:6.0.2
+            image: quay.io/janosjus/mongodb-ops-manager-db-bin:6.0.5
             command:
             - cp
             - -r

@@ -7,7 +7,7 @@ metadata:
   name: ops-manager
 spec:
   replicas: 1
-  version: 6.0.3
+  version: 6.0.12
   adminCredentials: ops-manager-admin-secret
 
   # These come from samples/ops-manager-ignore-ui-setup.yaml
@@ -39,7 +39,7 @@ spec:
   # Application database has the SCRAM-SHA authentication mode always enabled
   applicationDatabase:
     # This has to match the tag of the appdb-database container image in Iron Bank
-    version: 5.0.9-ent
+    version: 5.0.14-ent
     members: 3
     podSpec:
       podTemplate:
@@ -51,7 +51,7 @@ spec:
           # See here: https://kb.corp.mongodb.com/article/000020711/
           containers:
             - name: mongodb-agent-monitoring
-              image: registry1.dso.mil/ironbank/mongodb/mongodb-enterprise/mongodb-agent:12.0.11.7606-1
+              image: registry1.dso.mil/ironbank/mongodb/mongodb-enterprise/mongodb-agent:12.0.20.7686-1
 
   # Added to support Local Mode operation.
   # Also required: the PersistentVolumeClaim further below.
@@ -71,7 +71,7 @@ spec:
 
           initContainers:
           - name: mongodb-binaries-init-container
-            image: registry1.dso.mil/ironbank/mongodb/mongodb-enterprise/mongodb-ops-manager-db-bin:5.0.9
+            image: registry1.dso.mil/ironbank/mongodb/mongodb-enterprise/mongodb-ops-manager-db-bin:6.0.5
             command:
             - cp
             - -r
@@ -91,7 +91,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: mongodb-versions-claim
 spec:
-  storageClassName: gp2
+  storageClassName: gp3-csi
   accessModes:
     - ReadWriteOnce
   resources:
