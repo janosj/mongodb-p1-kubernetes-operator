@@ -1,0 +1,100 @@
+# Modifies previous coniguration to use Platform One containers.
+# The repo must be specified in two places: for the single agent, and for local mode.
+---
+apiVersion: mongodb.com/v1
+kind: MongoDBOpsManager
+metadata:
+  name: ops-manager
+spec:
+  replicas: 1
+  version: 6.0.3
+  adminCredentials: ops-manager-admin-secret
+
+  # These come from samples/ops-manager-ignore-ui-setup.yaml
+  configuration:
+    # Avoid the setup wizard in Ops Manager by supplying mandatory config settings 
+    mms.ignoreInitialUiSetup: "true"
+    automation.versions.source: mongodb
+    mms.adminEmailAddr: support@example.com
+    mms.fromEmailAddr: support@example.com
+    mms.replyToEmailAddr: support@example.com
+    mms.mail.hostname: email-smtp.us-east-1.amazonaws.com
+    mms.mail.port: "465"
+    mms.mail.ssl: "true"
+    mms.mail.transport: smtp
+    mms.minimumTLSVersion: TLSv1.2
+    # By default, Ops Manager will download required database binaries from MongoDB.
+    # For airgapped environments, set source  to "local" for local mode operation.
+    # DB binaries are provided below in statefulSet settings (ops-manager-db-bin container)
+    # automation.versions.source: mongodb
+    automation.versions.source: local
+
+  # These come from ops-manager-external.yaml
+  # optional. Disabled by default. Creates an additional service to make Ops Manager reachable from
+  # outside of the Kubernetes cluster.
+  externalConnectivity:
+    type: LoadBalancer
+
+  # the application database backing Ops Manager. Replica Set is the only supported type
+  # Application database has the SCRAM-SHA authentication mode always enabled
+  applicationDatabase:
+    # This has to match the tag of the appdb-database container image in Iron Bank
+    version: 5.0.9-ent
+    members: 3
+    podSpec:
+      podTemplate:
+        spec:
+          # The monitoring agent version defaults to the minimum supported version for
+          # the given version of Ops Manager. e.g. for Ops Manager 5.0.7, that's version
+          # 11.0.5.6963-1 of the agent, which isn't available on Iron Bank. 
+          # This switches it to use the available version. 
+          # See here: https://kb.corp.mongodb.com/article/000020711/
+          containers:
+            - name: mongodb-agent-monitoring
+              image: registry1.dso.mil/ironbank/mongodb/mongodb-enterprise/mongodb-agent:12.0.11.7606-1
+
+  # Added to support Local Mode operation.
+  # Also required: the PersistentVolumeClaim further below.
+  statefulSet:
+    spec:
+      template:
+        spec:
+          volumes:
+            - name: mongodb-versions
+              persistentVolumeClaim:
+                claimName: mongodb-versions-claim
+          containers:
+            - name: mongodb-ops-manager
+              volumeMounts:
+                - name: mongodb-versions
+                  mountPath: /mongodb-ops-manager/mongodb-releases
+
+          initContainers:
+          - name: mongodb-binaries-init-container
+            image: registry1.dso.mil/ironbank/mongodb/mongodb-enterprise/mongodb-ops-manager-db-bin:5.0.9
+            command:
+            - cp
+            - -r
+            - /binaries/.
+            - /mongodb-ops-manager/mongodb-releases/
+            volumeMounts:
+             - name: mongodb-versions
+               mountPath: /mongodb-ops-manager/mongodb-releases
+
+  backup:
+    enabled: false
+
+# Required for local mode db-binaries container.
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-versions-claim
+spec:
+  storageClassName: gp2
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+

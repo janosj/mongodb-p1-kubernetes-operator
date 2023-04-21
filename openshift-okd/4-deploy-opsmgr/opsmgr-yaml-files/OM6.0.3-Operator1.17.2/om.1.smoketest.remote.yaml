@@ -1,0 +1,54 @@
+# Basic Ops Mgr config to do a simple smoke test.
+# Use in conjunction with mongodb-enterprise-openshift.1.quickstart-mods.yaml.
+# Uses default Remote mode operation (not for disconnected environments).
+
+# Upgraded to OM 6.0.3 from 5.0.14, in conjunction with Operator 1.17.2.
+# No changes were noted in the 1.17.2 branch from previous iterations.
+# The basis for this config is samples/ops-manager.yaml from the 1.16.4 branch
+# Ops Mgr spec.version has been changed from 5.0.5 to 5.0.14
+# default domain is 'cluster.local', but you could change that to 'myCompany.net'
+# adminCredentials: either remove the secret or change the password using Ops Manager UI.
+# configuration: from ops-manager-ignore-ui-setup.yaml 
+# External connectivity via Load Balancer (from ops-manager-external.yaml)
+---
+apiVersion: mongodb.com/v1
+kind: MongoDBOpsManager
+metadata:
+  name: ops-manager
+spec:
+  replicas: 1
+  version: 6.0.3
+  adminCredentials: ops-manager-admin-secret
+
+  # These come from samples/ops-manager-ignore-ui-setup.yaml
+  configuration:
+    # Avoid the setup wizard in Ops Manager by supplying mandatory config settings 
+    mms.ignoreInitialUiSetup: "true"
+    automation.versions.source: mongodb
+    mms.adminEmailAddr: support@example.com
+    mms.fromEmailAddr: support@example.com
+    mms.replyToEmailAddr: support@example.com
+    mms.mail.hostname: email-smtp.us-east-1.amazonaws.com
+    mms.mail.port: "465"
+    mms.mail.ssl: "true"
+    mms.mail.transport: smtp
+    mms.minimumTLSVersion: TLSv1.2
+    automation.versions.source: mongodb
+
+  # These come from ops-manager-external.yaml
+  # optional. Disabled by default. Creates an additional service to make Ops Manager reachable from
+  # outside of the Kubernetes cluster.
+  externalConnectivity:
+    type: LoadBalancer
+
+  # the application database backing Ops Manager. Replica Set is the only supported type
+  # Application database has the SCRAM-SHA authentication mode always enabled
+  applicationDatabase:
+    members: 3
+    # optional. Configures the version of MongoDB used as an application database.
+    # The bundled MongoDB binary will be used if omitted and no download from the Internet will happen
+    version: 5.0.9-ent
+
+  backup:
+    enabled: false
+
