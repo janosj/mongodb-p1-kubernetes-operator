@@ -20,3 +20,8 @@ kubectl describe pod ops-manager-0 -n mongodb
 kubectl exec --stdin --tty ops-manager-0 -- /bin/bash
 kubectl exec --stdin --tty ops-manager-db-0 -- /bin/bash
 
+# PVCs, PVs, and Storage Classes
+kubectl get pv
+kubectl get pvc
+kubectl get storageclass
+
