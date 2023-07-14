@@ -66,6 +66,7 @@ clear
 echo "Required customization:"
 echo "By default the OKD installer creates 6 EC2 instances,"
 echo "3 masters (m5.xlarge instances across multiple AZs), and"
+# UPDATE: Installer 4.13 uses m6i.xlarge.
 echo "3 workers (m5.large: only 2 cores and 7.5GB RAM, 4.5GB available)."
 echo "Those workers are too small - Ops Manager requires a minimum of 5GB memory."
 echo "The number of masters can't be modified, but the worker type can be:"

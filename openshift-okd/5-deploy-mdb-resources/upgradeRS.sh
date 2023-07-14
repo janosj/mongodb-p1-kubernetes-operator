@@ -24,7 +24,7 @@ metadata:
   name: $RESOURCE_NAME
 spec:
   members: 3
-  version: 6.0.2-ent
+  version: 6.0.5-ent
   type: ReplicaSet
   statefulSet:
     spec:

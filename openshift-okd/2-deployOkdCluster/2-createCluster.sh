@@ -33,8 +33,13 @@ export AWS_PROFILE=personal
 openshift-install create cluster --dir $CLUSTER_NAME --log-level=info
 
 echo
+
+if [!-d $HOME/.kube]; then
+    mkdir -p $HOME/.kube;
+fi;
 cp mycluster1/auth/kubeconfig $HOME/.kube/config
 echo "Copied cluster config to $HOME/.kube.config so kubectl/oc can connect."
+
 # Alternatively, execute "export KUBECONFIG=$CLUSTER_NAME/auth/kubeconfig"
 # But that gets cumbersome if you have multiple windows open.
 

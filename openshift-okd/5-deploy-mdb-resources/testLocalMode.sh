@@ -39,7 +39,7 @@ kind: MongoDB
 metadata:
   name: mdb-bad-version
 spec:
-  version: 5.0.6-ent
+  version: 6.0.4-ent
   type: Standalone
   # Before you create this object, you'll need to create a project ConfigMap and a
   # credentials Secret. For instructions on how to do this, please refer to our
